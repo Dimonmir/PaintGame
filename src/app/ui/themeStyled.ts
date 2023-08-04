@@ -1,0 +1,56 @@
+import { DefaultTheme } from 'styled-components';
+
+const styledTheme: DefaultTheme = {
+    colors: {
+        main: '#4E10AE',
+        mainDark: '#2F0571',
+        secondary: '#7D44D6',
+        lightGray: '#EEEEEE',
+        darkGray: '#989898',
+        white: '#FFFFFF',
+        black: '#000000',
+    },
+    breakpoints: {
+        maxMobile: 480,
+        maxTablets: 768,
+        maxLaptops: 1024,
+    },
+    font: {
+        font4: 4,
+        font6: 6,
+        font8: 8,
+        font10: 10,
+        font12: 12,
+        font14: 14,
+        font16: 16,
+        font20: 20,
+        font24: 24,
+        font28: 28,
+        font32: 32,
+        font36: 36,
+        font40: 40,
+    },
+    spaces: {
+        space4: 4,
+        space6: 6,
+        space8: 8,
+        space10: 10,
+        space12: 12,
+        space14: 14,
+        space16: 16,
+        space20: 20,
+        space24: 24,
+        space28: 28,
+        space32: 32,
+        space36: 36,
+        space40: 40,
+        space44: 44,
+        space48: 48,
+        space50: 50,
+        space52: 52,
+        space56: 56,
+        space60: 60,
+    },
+};
+
+export default styledTheme;
