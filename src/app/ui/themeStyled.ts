@@ -2,13 +2,13 @@ import { DefaultTheme } from 'styled-components';
 
 const styledTheme: DefaultTheme = {
     colors: {
-        main: '#4E10AE',
+        main: '#DC9754',
         mainDark: '#2F0571',
-        secondary: '#7D44D6',
+        secondary: '#F6ECE1',
         lightGray: '#EEEEEE',
         darkGray: '#989898',
-        white: '#FFFFFF',
-        black: '#000000',
+        white: '#FBF9F7',
+        black: '#1F1F1F',
     },
     breakpoints: {
         maxMobile: 480,

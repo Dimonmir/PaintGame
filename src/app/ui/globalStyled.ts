@@ -1,6 +1,13 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
-// TODO: Добавить локальные шрифты
+const SAntPicker = css`
+  @media (max-width: ${({ theme }) => theme.breakpoints.maxTablets}px) {
+    .ant-picker-panels {
+      flex-direction: column;
+    }
+  }
+`;
+
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
@@ -22,38 +29,24 @@ const GlobalStyle = createGlobalStyle`
   *::after {
     box-sizing: border-box;
   }
-
-  :focus,
-  :active {
-    /*outline: none;*/
-  }
-
-  a:focus,
-  a:active {
-    /* outline: none;*/
-  }
+  
 
   /* Links */
-
   a, a:link, a:visited {
-    /* color: inherit; */
     text-decoration: none;
-    /* display: inline-block; */
   }
 
   a:hover {
-    /* color: inherit; */
     text-decoration: none;
   }
 
   /* Common */
-
   aside, nav, footer, header, section, main {
     display: block;
   }
 
   h1, h2, h3, h4, h5, h6, p {
-    margin: 0 !important;
+    margin: 0;
     font-size: inherit;
     font-weight: inherit;
   }
@@ -76,7 +69,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /* Form */
-
   input, textarea, button, select {
     font-family: inherit;
     font-size: inherit;
@@ -112,6 +104,8 @@ const GlobalStyle = createGlobalStyle`
   legend {
     display: block;
   }
+
+  ${SAntPicker}
 `;
 
 export default GlobalStyle;

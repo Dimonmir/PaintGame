@@ -18,6 +18,7 @@ export const mainTheme:ThemeConfig = {
     Input: {
       controlHeight: 50,
       fontSize: 16,
+      colorPrimaryActive: styledTheme.colors.main,
     },
     Select: {
       controlHeight: 50,

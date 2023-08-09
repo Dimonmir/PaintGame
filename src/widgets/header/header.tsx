@@ -5,7 +5,6 @@ import { ContainerFlex } from '@s-app';
 import { authLogout } from '@/features/authForm/api';
 import { useAppDispatch, useAppSelector } from '@/shared/store/redux';
 import { removeToken } from '@/entities/session/sessionSlice';
-import { removeAllTodo } from '@/shared/store/todoSlice';
 
 export default function Header() {
   const name = useAppSelector((state) => state.user.name);
@@ -13,15 +12,11 @@ export default function Header() {
   const handlerLogout = () => {
     authLogout().finally(() => {
       dispatch(removeToken());
-      dispatch(removeAllTodo());
     });
   };
 
   return (
     <Container>
-      <Typography.Title level={2} className="headerText">
-        Список дел
-      </Typography.Title>
       <ContainerFlex>
         <Typography.Title level={2} className="headerText">
           {name}
