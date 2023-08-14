@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SForm } from './s-authForm';
 import { authTry, validationSchema } from './api';
 import { useFormik } from 'formik';
-import { Button, Input, Typography } from 'antd';
+import { Button, Form, Input, Typography } from 'antd';
 import { useAppDispatch } from '@/shared/store/redux';
 import { addToken } from '@/entities/session/sessionSlice';
 import { useNavigate } from 'react-router-dom';
@@ -39,6 +39,7 @@ const AuthForm = () => {
         })
         .then(({ token, uid }) => {
           getDoc(doc(db, 'users', uid)).then((userData) => {
+            console.log(userData);
             if (userData.exists()) {
               let userAdd: IUser = {
                 uid: userData.data().uid,
@@ -66,13 +67,13 @@ const AuthForm = () => {
   };
 
   return (
-    <SForm onSubmitCapture={formik.handleSubmit} onKeyDown={handlerKeyDown}>
+    <Form onSubmitCapture={formik.handleSubmit} onKeyDown={handlerKeyDown}>
       {err && (
         <Typography.Title level={5} type="danger" className="error">
           {err}
         </Typography.Title>
       )}
-      <SForm.Item
+      <SForm
         help={formik.touched.email && formik.errors.email}
         validateStatus={formik.touched.email && formik.errors.email ? 'error' : ''}
         label={formik.initialValues.email}
@@ -87,8 +88,8 @@ const AuthForm = () => {
           onChange={formik.handleChange}
           className="authInput"
         />
-      </SForm.Item>
-      <SForm.Item
+      </SForm>
+      <SForm
         help={formik.touched.password && formik.errors.password}
         validateStatus={formik.touched.password && formik.errors.password ? 'error' : ''}
         label={formik.initialValues.password}
@@ -102,16 +103,16 @@ const AuthForm = () => {
           onChange={formik.handleChange}
           className="authInput"
         />
-      </SForm.Item>
-      <SForm.Item className="authItem">
+      </SForm>
+      <SForm className="authItem">
         <Button type="primary" disabled={!formik.isValid} className="authButton" htmlType="submit">
           Войти
         </Button>
-      </SForm.Item>
+      </SForm>
       <Typography.Link className="error" onClick={navigateReg}>
         Зарегистрироватся
       </Typography.Link>
-    </SForm>
+    </Form>
   );
 };
 

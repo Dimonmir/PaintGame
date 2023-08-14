@@ -1,7 +1,7 @@
 import { Form } from "antd"
 import styled from "styled-components"
 
-export const SForm = styled(Form)`
+export const SForm = styled(Form.Item)`
     width: 100%;
     display: flex;
     flex-direction: column;
