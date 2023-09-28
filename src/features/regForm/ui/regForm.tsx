@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SForm } from './s-regForm';
-import { regTry, validationSchema } from './api';
 import { useFormik } from 'formik';
-import { Button, Input, Typography } from 'antd';
-import { useAppDispatch } from '@/shared/store/redux';
-import { addToken } from '@/entities/session/sessionSlice';
+import { Button, Form, Input, Typography } from 'antd';
 import { IUser, addUser } from '@/entities/users/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/main';
+import { validationSchema } from '../model/IRegForm';
+import { regTry, useAppDispatch } from '@shared';
 
 const RegForm = () => {
   const navigate = useNavigate();
@@ -73,7 +72,7 @@ const RegForm = () => {
           {req}
         </Typography.Title>
       )}
-      <SForm.Item
+      <Form.Item
         help={formik.touched.email && formik.errors.email}
         validateStatus={formik.touched.email && formik.errors.email ? 'error' : ''}
         label={formik.initialValues.email}
@@ -89,8 +88,8 @@ const RegForm = () => {
           className="authInput"
           value={formik.values.name}
         />
-      </SForm.Item>
-      <SForm.Item
+      </Form.Item>
+      <Form.Item
         help={formik.touched.name && formik.errors.name}
         validateStatus={formik.touched.name && formik.errors.name ? 'error' : ''}
         label={formik.initialValues.name}
@@ -106,8 +105,8 @@ const RegForm = () => {
           className="authInput"
           value={formik.values.email}
         />
-      </SForm.Item>
-      <SForm.Item
+      </Form.Item>
+      <Form.Item
         help={formik.touched.password && formik.errors.password}
         validateStatus={formik.touched.password && formik.errors.password ? 'error' : ''}
         label={formik.initialValues.password}
@@ -122,12 +121,12 @@ const RegForm = () => {
           className="authInput"
           value={formik.values.password}
         />
-      </SForm.Item>
-      <SForm.Item className="authItem">
+      </Form.Item>
+      <Form.Item className="authItem">
         <Button type="primary" disabled={!formik.isValid} className="authButton" htmlType="submit">
           Зарегистрироватся
         </Button>
-      </SForm.Item>
+      </Form.Item>
       <Typography.Link className="error" onClick={navigateAuth}>
         Авторизироватся
       </Typography.Link>

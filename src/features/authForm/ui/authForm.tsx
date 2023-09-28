@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SForm } from './s-authForm';
-import { authTry, validationSchema } from './api';
+import { authTry } from '@shared';
 import { useFormik } from 'formik';
 import { Button, Form, Input, Typography } from 'antd';
 import { useAppDispatch } from '@/shared/store/redux';
 import { addToken } from '@/entities/session/sessionSlice';
 import { useNavigate } from 'react-router-dom';
-import { setDoc, doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/main';
 import { IUser, addUser } from '@/entities/users/userSlice';
+import { validationSchema } from '../model/IAuthForm';
 
 const AuthForm = () => {
   const navigate = useNavigate();

@@ -3,9 +3,10 @@ import { ContainerPage } from './menu.styles';
 
 const Menu = () => {
   return (
-    <ContainerPage>
+    <>
       <Header />
-    </ContainerPage>
+      <ContainerPage />
+    </>
   );
 };
 
