@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AuthForm from '@widgets/authForm';
 import RegForm from '@widgets/regForm';
 import { useAppSelector } from '@shared';
-import Menu from '@pages/Menu/Menu';
+import Menu from '@pages/Menu/ui/Menu';
 
 const publicRoutes = createBrowserRouter([
   {
