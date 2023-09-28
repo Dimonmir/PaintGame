@@ -8,6 +8,7 @@ export const BoxAuth = styled('div')`
     justify-content: center;
     gap: 40px;
     box-shadow: 0px 4px 8px 2px rgba(34, 60, 80, 0.2);
+    background-color: #FFFFFF;
     position: absolute;
     top: 30%;
     left: 50%;

@@ -7,11 +7,11 @@ export const BoxMenu = styled('div')`
     flex-direction: column;
     justify-content: center;
     gap: 40px;
-    box-shadow: 0px 4px 8px 2px rgba(34, 60, 80, 0.2);
+    background-color: ${({theme}) => theme.colors.white};
     position: absolute;
-    top: 30%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -30%);
+    transform: translate(-50%, -50%);
     border-radius: 10px;
     .menuHeader{ 
         display: flex;
@@ -22,5 +22,15 @@ export const BoxMenu = styled('div')`
     }
     @media (max-width: 576px) {
         width: 80%;
+    }
+
+    .menuButton {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        & * {
+            font-size: 20px;
+            line-height: inherit;
+        }
     }
 `

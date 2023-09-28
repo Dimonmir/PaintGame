@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     font-size: ${({ theme }) => theme.font.font14}px;
     font-weight: 400;
+    background-color: ${({ theme }) => theme.colors.secondary} ;
   }
 
   /* Reset and base styles  */
