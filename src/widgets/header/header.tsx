@@ -2,9 +2,8 @@ import { ExportOutlined } from '@ant-design/icons';
 import { Avatar, Button, Typography } from 'antd';
 import { Container } from './s-header';
 import { ContainerFlex } from '@s-app';
-import { useAppDispatch, useAppSelector } from '@/shared/store/redux';
 import { removeToken } from '@/entities/session/sessionSlice';
-import { authLogout } from '@shared';
+import { authLogout, useAppDispatch, useAppSelector } from '@shared';
 
 export default function Header() {
   const name = useAppSelector((state) => state.user.name);

@@ -4,6 +4,7 @@ import AuthForm from '@widgets/authForm';
 import RegForm from '@widgets/regForm';
 import { useAppSelector } from '@shared';
 import Menu from '@pages/Menu/ui/Menu';
+import Game from '@pages/Game';
 
 const publicRoutes = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: '/',
     element: <Menu />,
+  },
+  {
+    path: '/game',
+    element: <Game />,
   },
 ]);
 
