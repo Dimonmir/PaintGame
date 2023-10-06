@@ -8,7 +8,7 @@ const Game = () => {
     <>
       <Header />
       <GameForm>
-        <Canvas />
+        <Canvas/>
         <Chat />
       </GameForm>
     </>
