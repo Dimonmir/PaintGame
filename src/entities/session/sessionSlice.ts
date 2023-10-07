@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface ITypeSession {
-    token: string
+    token: string,
+    roomId: string | null,
+    host: boolean | null,
 }
 
-const initialState: ITypeSession = { token: "" }
+const initialState: ITypeSession = { token: "", host: null, roomId: null }
 
 const sessionSlice = createSlice({
     name: 'session',

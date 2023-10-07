@@ -8,8 +8,20 @@ export const GameForm = styled.div`
   border-radius: 10px;
   margin: 50px auto 0;
 
-  .canvas {
-    flex: 1 1 80%;
-    border-right: 1px solid ${({ theme }) => theme.colors.black};
+  .gameConteiner {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 10px;
+    flex: 0 0 10%;
+    align-content: center;
+    justify-content: space-between;
+    color: ${({ theme }) => theme.colors.black};
+    font-size: 24px;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
   }
 `;

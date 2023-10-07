@@ -1,6 +1,10 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
-export const SMessage = styled.div`
+interface ISMessage {
+    myMessage: boolean
+}
+
+export const SMessage = styled.div<ISMessage>`
     display: grid;
     padding: 5px;
     grid-gap: 5px;
@@ -11,6 +15,13 @@ export const SMessage = styled.div`
     border-radius: 10px;
     border: 1px solid ${({ theme }) => theme.colors.darkGray};
     
+    ${(props)=> 
+        props.myMessage &&
+        css`
+        align-self: center;
+        `
+    }
+
     & .message{
         display: flex;
         flex-direction: column;

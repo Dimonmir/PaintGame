@@ -7,7 +7,7 @@ export const SChat = styled.div`
     
     
     & .headerContainer {
-        flex: 1 1 10%;
+        flex: 0 0 10%;
         display: flex;
         align-items: center;
         justify-content: space-around;

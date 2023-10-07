@@ -32,21 +32,25 @@ const MOCKMessage: IMessage[] = [
     author: 'Dima',
     avatar: '/avatar0.png',
     message: 'Крокодил',
+    uid: '123',
   },
   {
     author: 'Roma',
     avatar: '/avatar2.png',
     message: 'Макака',
+    uid: '123',
   },
   {
     author: 'Masha',
     avatar: '/avatar1.png',
     message: 'Ромик',
+    uid: '123',
   },
   {
     author: 'Egor',
     avatar: '/avatar3.png',
     message: 'АААААААААААААААААААААААААААААААААААААААААААААААААА',
+    uid: '123',
   },
 ];
 
@@ -90,7 +94,12 @@ export const Chat = () => {
         <div className="chatDialog">
           {MOCKMessage.length ? (
             MOCKMessage.map((message) => (
-              <Message author={message.author} avatar={message.avatar} message={message.message} />
+              <Message
+                author={message.author}
+                avatar={message.avatar}
+                message={message.message}
+                uid={message.uid}
+              />
             ))
           ) : (
             <Empty className="empty" description="Сообщений пока что нет" />
@@ -98,6 +107,7 @@ export const Chat = () => {
         </div>
         <div className="chatSendMessage">
           <Input
+            onPressEnter={handleButton}
             placeholder="Напиши сообщение"
             value={message}
             onChange={handleInput}
