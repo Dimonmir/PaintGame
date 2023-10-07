@@ -2,63 +2,58 @@ import { Avatar, Button, Empty, Input, InputProps } from 'antd';
 import { SChat } from './s-chat';
 import { MessageOutlined } from '@ant-design/icons';
 import Message from '@entities/message/Message';
-import { IMessage, IPlayer, useAppDispatch, useAppSelector } from '@shared/index';
-import { ChangeEventHandler, useState } from 'react';
-import { app, database } from '@main';
-import { push, ref, set } from 'firebase/database';
+import {
+  IMessage,
+  IPlayer,
+  hasTargetValue,
+  isIMessage,
+  isIPlayer,
+  randString,
+  useAppDispatch,
+  useAppSelector,
+} from '@shared/index';
+import { ChangeEventHandler, useEffect, useState } from 'react';
+import { app, database, db } from '@main';
+import { DataSnapshot, getDatabase, onValue, push, ref, set } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
-const MOCKPlayer: IPlayer[] = [
-  {
-    user: 'Dima',
-    avatar: '/avatar0.png',
-  },
-  {
-    user: 'Roma',
-    avatar: '/avatar2.png',
-  },
-  {
-    user: 'Masha',
-    avatar: '/avatar1.png',
-  },
-  {
-    user: 'Egor',
-    avatar: '/avatar3.png',
-  },
-];
-
-const MOCKMessage: IMessage[] = [
-  {
-    author: 'Dima',
-    avatar: '/avatar0.png',
-    message: 'Крокодил',
-    uid: '123',
-  },
-  {
-    author: 'Roma',
-    avatar: '/avatar2.png',
-    message: 'Макака',
-    uid: '123',
-  },
-  {
-    author: 'Masha',
-    avatar: '/avatar1.png',
-    message: 'Ромик',
-    uid: '123',
-  },
-  {
-    author: 'Egor',
-    avatar: '/avatar3.png',
-    message: 'АААААААААААААААААААААААААААААААААААААААААААААААААА',
-    uid: '123',
-  },
-];
 
 export const Chat = () => {
   const auth = getAuth(app);
   const profile = useAppSelector((store) => store.user);
+  const roomId = useAppSelector((store) => store.session.roomId);
+  const avatar = useAppSelector((store) => store.session.avatar);
 
+  const [playersRoom, setPlayersRoom] = useState<IPlayer[]>([]);
+  const [messageChat, setMessageChat] = useState<IMessage[]>([]);
   const [message, setMessage] = useState<string>('');
+
+  useEffect(() => {
+    const startPlayersRef = ref(getDatabase(), 'game/' + roomId + '/players');
+    const startMessageRef = ref(getDatabase(), 'game/' + roomId + '/chat');
+
+    onValue(startPlayersRef, (snapshot: DataSnapshot) => {
+      const valueSnap = snapshot.val();
+      const tempPlayers: IPlayer[] = [];
+      for (const [keyPlayers, valuePlayers] of Object.entries(valueSnap)) {
+        if (isIPlayer(valuePlayers)) {
+          !hasTargetValue(playersRoom, valuePlayers.uid) && tempPlayers.push(valuePlayers);
+        }
+      }
+      console.log(2);
+      tempPlayers.length !== playersRoom.length && setPlayersRoom(tempPlayers);
+    });
+
+    onValue(startMessageRef, (snapshot: DataSnapshot) => {
+      const valueSnap = snapshot.val();
+      const tempMessage: IMessage[] = [];
+      for (const [keyMessage, valueMessage] of Object.entries(valueSnap)) {
+        if (isIMessage(valueMessage)) {
+          !hasTargetValue(messageChat, valueMessage.messageId) && tempMessage.push(valueMessage);
+        }
+      }
+      tempMessage.length !== messageChat.length && setMessageChat(tempMessage);
+    });
+  }, []);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -71,10 +66,12 @@ export const Chat = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         user.getIdToken().then((idToken) => {
-          push(ref(database, 'game/123/chat'), {
+          push(ref(database, 'game/' + roomId + '/chat'), {
             message: message,
             author: profile.name,
             uid: profile.uid,
+            avatar: avatar,
+            messageId: randString(),
           }).then(() => {
             setMessage('');
           });
@@ -86,19 +83,22 @@ export const Chat = () => {
   return (
     <SChat>
       <div className="headerContainer">
-        {MOCKPlayer.map((player) => (
-          <Avatar size={40} icon={<img src={player.avatar} alt="avatar" />} />
-        ))}
+        {playersRoom.length &&
+          playersRoom.map((player) => (
+            <Avatar size={40} icon={<img src={player.avatar} alt="avatar" />} />
+          ))}
       </div>
       <div className="chatContainer">
         <div className="chatDialog">
-          {MOCKMessage.length ? (
-            MOCKMessage.map((message) => (
+          {messageChat.length ? (
+            messageChat.map((item) => (
               <Message
-                author={message.author}
-                avatar={message.avatar}
-                message={message.message}
-                uid={message.uid}
+                author={item.author}
+                avatar={item.avatar}
+                messageId={item.messageId}
+                message={item.message}
+                uid={item.uid}
+                key={item.messageId}
               />
             ))
           ) : (

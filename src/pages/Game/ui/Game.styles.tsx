@@ -10,6 +10,7 @@ export const GameForm = styled.div`
 
   .gameConteiner {
     display: flex;
+    flex: 1 1 80%;
     flex-direction: column;
   }
 
@@ -23,5 +24,10 @@ export const GameForm = styled.div`
     color: ${({ theme }) => theme.colors.black};
     font-size: 24px;
     border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
+
+    .back {
+      padding: 0px;
+      height: fit-content;
+    }
   }
 `;

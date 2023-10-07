@@ -14,6 +14,7 @@ export const SChat = styled.div`
         border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
     }
     & .chatContainer {
+        overflow: scroll;
         flex: 1 1 92%;
         display: flex;
         flex-direction: column;
