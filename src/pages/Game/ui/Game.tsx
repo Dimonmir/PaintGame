@@ -25,6 +25,7 @@ const Game = () => {
   }
 
   useEffect(() => {
+    let flag: boolean = true;
     get(child(ref(getDatabase()), `game`))
       .then((snapshot: DataSnapshot) => {
         if (snapshot.exists()) {
@@ -36,7 +37,7 @@ const Game = () => {
                 for (const [keyPlayers, valuePlayers] of Object.entries(value.players)) {
                   const player: IPlayer = valuePlayers;
                   if (Object.keys(value.players).length < 4) {
-                    if (hasTargetValue(arrayOfPlayers, player.uid)) {
+                    if (!hasTargetValue(arrayOfPlayers, profile.uid)) {
                       dispatch(setRoomId(key));
                       dispatch(setHost(player.host));
                       dispatch(setAvatar(player.avatar));
@@ -48,6 +49,7 @@ const Game = () => {
                         avatar: '/avatar' + Math.floor(Math.random() * 9) + '.png',
                       });
                     }
+                    flag = false;
                   }
                 }
                 return;
@@ -55,16 +57,18 @@ const Game = () => {
             }
           }
         }
-        const room = randString();
-        dispatch(setHost(true));
-        dispatch(setRoomId(room));
-        dispatch(setAvatar('/avatar' + Math.floor(Math.random() * 9) + '.png'));
-        push(ref(database, 'game/' + room + '/players'), {
-          user: profile.name,
-          uid: profile.uid,
-          host: true,
-          avatar: avatar,
-        });
+        if (flag) {
+          const room = randString();
+          dispatch(setHost(true));
+          dispatch(setRoomId(room));
+          dispatch(setAvatar('/avatar' + Math.floor(Math.random() * 9) + '.png'));
+          push(ref(database, 'game/' + room + '/players'), {
+            user: profile.name,
+            uid: profile.uid,
+            host: true,
+            avatar: avatar,
+          });
+        }
       })
       .catch((error) => {
         console.error(error);

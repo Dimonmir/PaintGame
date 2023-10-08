@@ -35,6 +35,7 @@ export const Chat = () => {
   };
 
   useEffect(() => {
+    console.log(roomId);
     const startPlayersRef = ref(getDatabase(), 'game/' + roomId + '/players');
     const startMessageRef = ref(getDatabase(), 'game/' + roomId + '/chat');
 
@@ -54,6 +55,8 @@ export const Chat = () => {
       const tempMessage: IMessage[] = [];
       for (const [keyMessage, valueMessage] of Object.entries(valueSnap)) {
         if (isIMessage(valueMessage)) {
+          console.log(messageChat, valueMessage.messageId);
+          console.log(hasTargetValue(messageChat, valueMessage.messageId));
           !hasTargetValue(messageChat, valueMessage.messageId) && tempMessage.push(valueMessage);
         }
       }
@@ -64,10 +67,6 @@ export const Chat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messageChat]);
-
-  useEffect(() => {
-    console.log(playersRoom);
-  }, [playersRoom]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
