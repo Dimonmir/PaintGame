@@ -35,12 +35,12 @@ const Game = () => {
                 const arrayOfPlayers = Object.values(value.players);
                 for (const [keyPlayers, valuePlayers] of Object.entries(value.players)) {
                   const player: IPlayer = valuePlayers;
-                  if (hasTargetValue(arrayOfPlayers, player.uid)) {
-                    dispatch(setRoomId(key));
-                    dispatch(setHost(player.host));
-                    dispatch(setAvatar(player.avatar));
-                  } else {
-                    if (Object.keys(value.players).length < 4) {
+                  if (Object.keys(value.players).length < 4) {
+                    if (hasTargetValue(arrayOfPlayers, player.uid)) {
+                      dispatch(setRoomId(key));
+                      dispatch(setHost(player.host));
+                      dispatch(setAvatar(player.avatar));
+                    } else {
                       push(ref(database, 'game/' + key + '/players'), {
                         user: profile.name,
                         uid: profile.uid,
