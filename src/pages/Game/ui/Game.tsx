@@ -38,7 +38,7 @@ const Game = () => {
                         user: profile.name,
                         uid: profile.uid,
                         host: false,
-                        avatar: '/avatar' + Math.floor(Math.random() * 4) + '.png',
+                        avatar: '/avatar' + Math.floor(Math.random() * 8) + '.png',
                       });
                     }
                   }
