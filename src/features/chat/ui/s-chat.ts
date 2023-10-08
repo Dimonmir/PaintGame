@@ -15,6 +15,7 @@ export const SChat = styled.div`
     }
     & .chatContainer {
         overflow: scroll;
+        overflow-x: hidden;
         flex: 1 1 92%;
         display: flex;
         flex-direction: column;
@@ -30,11 +31,14 @@ export const SChat = styled.div`
         justify-content: flex-start;
     }
     & .chatSendMessage {
+        position: sticky;
+        bottom: 0;
         padding: 0 20px 0 10px;
         border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
         flex: 1 1 8%;
         display: flex;
         align-items: center;
+        background-color: #FFFFFF;
     }
 
     & .sendMessageBtn {

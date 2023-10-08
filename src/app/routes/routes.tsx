@@ -5,6 +5,7 @@ import RegForm from '@widgets/regForm';
 import { useAppSelector } from '@shared';
 import Menu from '@pages/Menu/ui/Menu';
 import Game from '@pages/Game';
+import NotFound from '@pages/NotFound';
 
 const publicRoutes = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const publicRoutes = createBrowserRouter([
   {
     path: '/reg',
     element: <RegForm />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
 
@@ -25,6 +30,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: '/game',
     element: <Game />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
 

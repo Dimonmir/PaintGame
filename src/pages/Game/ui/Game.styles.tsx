@@ -8,6 +8,10 @@ export const GameForm = styled.div`
   border-radius: 10px;
   margin: 50px auto 0;
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}px) {
+    margin: 20px auto 0;
+  }
+
   .gameConteiner {
     display: flex;
     flex: 1 1 80%;

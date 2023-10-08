@@ -12,7 +12,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@shared/index';
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import { app, database, db } from '@main';
 import { DataSnapshot, getDatabase, onValue, push, ref, set } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -26,6 +26,14 @@ export const Chat = () => {
   const [playersRoom, setPlayersRoom] = useState<IPlayer[]>([]);
   const [messageChat, setMessageChat] = useState<IMessage[]>([]);
   const [message, setMessage] = useState<string>('');
+
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
 
   useEffect(() => {
     const startPlayersRef = ref(getDatabase(), 'game/' + roomId + '/players');
@@ -54,6 +62,10 @@ export const Chat = () => {
       tempMessage.length !== messageChat.length && setMessageChat(tempMessage);
     });
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messageChat]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -89,7 +101,7 @@ export const Chat = () => {
           ))}
       </div>
       <div className="chatContainer">
-        <div className="chatDialog">
+        <div className="chatDialog" ref={chatContainerRef}>
           {messageChat.length ? (
             messageChat.map((item) => (
               <Message

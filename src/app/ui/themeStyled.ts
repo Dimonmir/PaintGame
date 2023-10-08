@@ -15,6 +15,7 @@ const styledTheme: DefaultTheme = {
         maxTablets: 768,
         maxLaptops: 1024,
         oldDesktop: 1200,
+        desktop: 1440,
     },
     font: {
         font4: 4,
