@@ -8,6 +8,7 @@ import { Button } from 'antd';
 import { setAvatar, setHost, setRoomId } from '@entities/session/sessionSlice';
 import { get, child, ref, getDatabase, DataSnapshot, push } from 'firebase/database';
 import { database } from '@main';
+import { useNavigate } from 'react-router-dom';
 
 const Game = () => {
   const profile = useAppSelector((store) => store.user);
@@ -16,6 +17,12 @@ const Game = () => {
   const avatar = useAppSelector((store) => store.session.avatar);
 
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  function navigateMenu() {
+    navigate('/game');
+  }
 
   useEffect(() => {
     get(child(ref(getDatabase()), `game`))
@@ -38,7 +45,7 @@ const Game = () => {
                         user: profile.name,
                         uid: profile.uid,
                         host: false,
-                        avatar: '/avatar' + Math.floor(Math.random() * 8) + '.png',
+                        avatar: '/avatar' + Math.floor(Math.random() * 9) + '.png',
                       });
                     }
                   }
@@ -51,7 +58,7 @@ const Game = () => {
         const room = randString();
         dispatch(setHost(true));
         dispatch(setRoomId(room));
-        dispatch(setAvatar('/avatar' + Math.floor(Math.random() * 4) + '.png'));
+        dispatch(setAvatar('/avatar' + Math.floor(Math.random() * 9) + '.png'));
         push(ref(database, 'game/' + room + '/players'), {
           user: profile.name,
           uid: profile.uid,
@@ -69,7 +76,7 @@ const Game = () => {
       <GameForm>
         <div className="gameConteiner">
           <div className="title">
-            <Button className="back" type="text" danger>
+            <Button className="back" type="text" danger onClick={navigateMenu}>
               Выйти
             </Button>
             <div>{host ? 'Вы хост' : 'Вы участник'}</div>

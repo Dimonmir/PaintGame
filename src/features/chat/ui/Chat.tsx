@@ -9,11 +9,10 @@ import {
   isIMessage,
   isIPlayer,
   randString,
-  useAppDispatch,
   useAppSelector,
 } from '@shared/index';
-import { ChangeEventHandler, useEffect, useRef, useState } from 'react';
-import { app, database, db } from '@main';
+import { useEffect, useRef, useState } from 'react';
+import { app, database } from '@main';
 import { DataSnapshot, getDatabase, onValue, push, ref, set } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
@@ -47,7 +46,6 @@ export const Chat = () => {
           !hasTargetValue(playersRoom, valuePlayers.uid) && tempPlayers.push(valuePlayers);
         }
       }
-      console.log(2);
       tempPlayers.length !== playersRoom.length && setPlayersRoom(tempPlayers);
     });
 
@@ -66,6 +64,10 @@ export const Chat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messageChat]);
+
+  useEffect(() => {
+    console.log(playersRoom);
+  }, [playersRoom]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -97,7 +99,10 @@ export const Chat = () => {
       <div className="headerContainer">
         {playersRoom.length &&
           playersRoom.map((player) => (
-            <Avatar size={40} icon={<img src={player.avatar} alt="avatar" />} />
+            <>
+              <div>{player.user}</div>
+              <Avatar size={40} icon={<img src={player.avatar} alt="avatar" />} />
+            </>
           ))}
       </div>
       <div className="chatContainer">
