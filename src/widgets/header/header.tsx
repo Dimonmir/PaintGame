@@ -17,6 +17,9 @@ export default function Header() {
   return (
     <Container>
       <Avatar size={40} icon={<img src={'/myLogo.jpg'} alt="avatar" />} />
+      <Typography.Title level={5} className="headerText">
+        version 0.1
+      </Typography.Title>
       <ContainerFlex>
         <Typography.Title level={2} className="headerText">
           {name}

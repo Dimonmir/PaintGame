@@ -34,11 +34,10 @@ const Game = () => {
                     dispatch(setAvatar(player.avatar));
                   } else {
                     if (Object.keys(value.players).length < 4) {
-                      console.log(121);
                       push(ref(database, 'game/' + key + '/players'), {
                         user: profile.name,
                         uid: profile.uid,
-                        host: true,
+                        host: false,
                         avatar: '/avatar' + Math.floor(Math.random() * 4) + '.png',
                       });
                     }
@@ -56,7 +55,7 @@ const Game = () => {
         push(ref(database, 'game/' + room + '/players'), {
           user: profile.name,
           uid: profile.uid,
-          host: host,
+          host: true,
           avatar: avatar,
         });
       })
