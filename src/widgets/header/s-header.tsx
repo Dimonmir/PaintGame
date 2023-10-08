@@ -11,6 +11,13 @@ export const Container = styled('div')`
   .headerText {
     color: white;
   }
+  @media (max-width: ${({ theme }) => theme.breakpoints.oldDesktop}px) {
+    padding: 2% 2%;
+    .headerText {
+      font-size: 20px;
+      margin: 0 !important;
+    }
+  }
   @media (max-width: 576px) {
     padding: 2% 2%;
     .headerText {

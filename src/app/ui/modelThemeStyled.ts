@@ -15,6 +15,7 @@ declare module 'styled-components' {
             maxMobile: number;
             maxTablets: number;
             maxLaptops: number;
+            oldDesktop: number;
         };
         font: {
             font4: number;

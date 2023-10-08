@@ -48,11 +48,11 @@ const Game = () => {
             }
           }
         }
-
+        const room = randString();
         dispatch(setHost(true));
-        dispatch(setRoomId(randString()));
+        dispatch(setRoomId(room));
         dispatch(setAvatar('/avatar' + Math.floor(Math.random() * 4) + '.png'));
-        push(ref(database, 'game/' + roomId + '/players'), {
+        push(ref(database, 'game/' + room + '/players'), {
           user: profile.name,
           uid: profile.uid,
           host: host,
