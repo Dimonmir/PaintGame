@@ -35,7 +35,7 @@ const Game = () => {
                 const arrayOfPlayers = Object.values(value.players);
                 for (const [keyPlayers, valuePlayers] of Object.entries(value.players)) {
                   const player: IPlayer = valuePlayers;
-                  if (!hasTargetValue(arrayOfPlayers, player.uid)) {
+                  if (hasTargetValue(arrayOfPlayers, player.uid)) {
                     dispatch(setRoomId(key));
                     dispatch(setHost(player.host));
                     dispatch(setAvatar(player.avatar));
