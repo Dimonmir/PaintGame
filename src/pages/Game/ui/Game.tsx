@@ -3,7 +3,7 @@ import { GameForm } from './Game.styles';
 import Canvas from '@features/canvas';
 import Chat from '@features/chat';
 import { useEffect } from 'react';
-import { IPlayer, randString, useAppDispatch, useAppSelector } from '@shared/index';
+import { IPlayer, hasTargetValue, randString, useAppDispatch, useAppSelector } from '@shared/index';
 import { Button } from 'antd';
 import { setAvatar, setHost, setRoomId } from '@entities/session/sessionSlice';
 import { get, child, ref, getDatabase, DataSnapshot, push } from 'firebase/database';
@@ -25,16 +25,17 @@ const Game = () => {
           for (const [key, value] of Object.entries(data)) {
             if (value && typeof value === 'object' && 'players' in value) {
               if (value.players && typeof value.players === 'object') {
+                const arrayOfPlayers = Object.values(value.players);
                 for (const [keyPlayers, valuePlayers] of Object.entries(value.players)) {
                   const player: IPlayer = valuePlayers;
-                  if (player.uid === profile.uid) {
+                  if (!hasTargetValue(arrayOfPlayers, player.uid)) {
                     dispatch(setRoomId(key));
                     dispatch(setHost(player.host));
                     dispatch(setAvatar(player.avatar));
                   } else {
                     if (Object.keys(value.players).length < 4) {
                       console.log(121);
-                      push(ref(database, 'game/' + roomId + '/players'), {
+                      push(ref(database, 'game/' + key + '/players'), {
                         user: profile.name,
                         uid: profile.uid,
                         host: true,

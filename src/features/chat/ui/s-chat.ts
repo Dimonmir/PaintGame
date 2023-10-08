@@ -14,25 +14,27 @@ export const SChat = styled.div`
         border-bottom: 1px solid ${({ theme }) => theme.colors.lightGray};
     }
     & .chatContainer {
-        overflow: scroll;
-        overflow-x: hidden;
         flex: 1 1 92%;
+        height: 90%;
         display: flex;
         flex-direction: column;
-        padding-top: 10px;
+        position: relative;
     }
     
     & .chatDialog {
         flex: 1 1 90%;
+        height: 90%;
         gap: 10px;
+        padding: 10px 0;
         display: flex;
         position: relative;
         flex-direction: column;
         justify-content: flex-start;
+        overflow: scroll;
+        overflow-x: hidden;
     }
+    
     & .chatSendMessage {
-        position: sticky;
-        bottom: 0;
         padding: 0 20px 0 10px;
         border-top: 1px solid ${({ theme }) => theme.colors.lightGray};
         flex: 1 1 8%;
