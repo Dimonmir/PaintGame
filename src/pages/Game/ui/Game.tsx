@@ -42,11 +42,16 @@ const Game = () => {
                       dispatch(setHost(player.host));
                       dispatch(setAvatar(player.avatar));
                     } else {
+                      const avatarRand = '/avatar' + Math.floor(Math.random() * 9) + '.png';
                       push(ref(database, 'game/' + key + '/players'), {
                         user: profile.name,
                         uid: profile.uid,
                         host: false,
-                        avatar: '/avatar' + Math.floor(Math.random() * 9) + '.png',
+                        avatar: avatarRand,
+                      }).then(() => {
+                        dispatch(setRoomId(key));
+                        dispatch(setHost(false));
+                        dispatch(setAvatar(avatarRand));
                       });
                     }
                     flag = false;
@@ -58,15 +63,16 @@ const Game = () => {
           }
         }
         if (flag) {
-          const room = randString();
+          const roomRand = randString();
+          const avatarRand = '/avatar' + Math.floor(Math.random() * 9) + '.png';
           dispatch(setHost(true));
-          dispatch(setRoomId(room));
-          dispatch(setAvatar('/avatar' + Math.floor(Math.random() * 9) + '.png'));
-          push(ref(database, 'game/' + room + '/players'), {
+          dispatch(setRoomId(roomRand));
+          dispatch(setAvatar(avatarRand));
+          push(ref(database, 'game/' + roomRand + '/players'), {
             user: profile.name,
             uid: profile.uid,
             host: true,
-            avatar: avatar,
+            avatar: avatarRand,
           });
         }
       })
