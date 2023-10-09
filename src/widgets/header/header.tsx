@@ -4,6 +4,7 @@ import { Container } from './s-header';
 import { ContainerFlex } from '@s-app';
 import { removeToken } from '@/entities/session/sessionSlice';
 import { authLogout, useAppDispatch, useAppSelector } from '@shared';
+import { Message } from '@features/Message';
 
 export default function Header() {
   const name = useAppSelector((state) => state.user.name);
@@ -16,6 +17,7 @@ export default function Header() {
 
   return (
     <Container>
+      <Message />
       <Avatar size={40} icon={<img src={'/myLogo.jpg'} alt="avatar" />} />
       <Typography.Title level={5} className="headerText">
         version 0.5

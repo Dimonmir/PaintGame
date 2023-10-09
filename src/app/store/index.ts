@@ -12,7 +12,7 @@ import {
 } from 'redux-persist';
 import storage from "redux-persist/es/storage";
 
-import sessionSlice from "@entities/session";
+import {sessionSlice} from "@entities/session";
 import userSlice from "@entities/users";
 import messageSlice from "@features/Message/model/message.slice";
 

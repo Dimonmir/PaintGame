@@ -1,27 +1,27 @@
 import { ArgsProps } from 'antd/es/notification/interface';
 import { IMessageItemNotification } from '@shared/model/IMessageNotification';
 import { CSSProperties } from 'react';
+import { mainTheme } from '@app/ui/theme';
 
 type IMessageConfigProps = ArgsProps & Pick<IMessageItemNotification, 'type'>;
 
 const notificationConfig = ({ type, ...props }: IMessageConfigProps): ArgsProps => {
   let notificationStyle: CSSProperties = {
-    color: 'white',
     marginLeft: 0,
     width: 'max-content',
   };
 
   if (type === 'info') {
-    notificationStyle = { ...notificationStyle, backgroundColor: '#797979' };
+    notificationStyle = { ...notificationStyle, backgroundColor:  '#ce7e00', color: 'white'};
   }
   if (type === 'error') {
-    notificationStyle = { ...notificationStyle, backgroundColor: '#B22222' };
+    notificationStyle = { ...notificationStyle, backgroundColor: '#989898', color: 'white' };
   }
   if (type === 'success') {
-    notificationStyle = { ...notificationStyle, backgroundColor: '#63A388' };
+    notificationStyle = { ...notificationStyle, backgroundColor: '#F6ECE1', color: 'black' };
   }
   if (type === 'warning') {
-    notificationStyle = { ...notificationStyle, backgroundColor: '#FF9A19' };
+    notificationStyle = { ...notificationStyle, backgroundColor: '#DC9754',color: 'white' };
   }
 
   return {

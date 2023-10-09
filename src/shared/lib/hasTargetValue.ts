@@ -1,12 +1,12 @@
 export const hasTargetValue = (arr: Array<any>, target: string) =>{
-    let flag = true;
+    let flag = false;
     if (arr.length === 0){
-        flag = false;
+        flag = true;
     } else {
         arr.map((obj) => {
-            for (const [key, value] of Object.entries(obj)) {
+            for (const value of Object.values(obj)) {
                 if (value === target) {
-                    flag = false;
+                    flag = true;
                 }
             }
         });

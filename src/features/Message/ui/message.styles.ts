@@ -19,7 +19,7 @@ export const SContainerItem = styled.div`
   border-radius: 8px;
   gap: 20px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.orange};
+  color: ${({ theme }) => theme.colors.white};
 
   .ant-message-custom-content {
     word-wrap: break-word;

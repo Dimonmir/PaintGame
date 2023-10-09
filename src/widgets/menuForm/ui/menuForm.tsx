@@ -9,6 +9,7 @@ const MenuForm = () => {
   function navigateGame() {
     navigate('/game/' + randString());
   }
+
   return (
     <BoxMenu>
       <div className="menuHeader">

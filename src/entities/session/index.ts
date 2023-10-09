@@ -1,3 +1,4 @@
-import sessionSlice from './sessionSlice'
+import sessionSlice, {setSession, setAvatar, setHost, setRoomId,} from './sessionSlice'
+import {selectorSession} from './sessionSelectors'
 
-export default sessionSlice
+export  {sessionSlice, selectorSession, setSession, setAvatar, setHost, setRoomId,}

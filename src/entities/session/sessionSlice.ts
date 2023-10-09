@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface ITypeSession {
-    token: string,
+    token?: string,
     roomId: string | null,
+    playerId: string | null,
     host: boolean | null,
     avatar: string | null,
 }
 
-const initialState: ITypeSession = { token: "", host: null, roomId: null, avatar: null }
+const initialState: ITypeSession = { token: "", host: null, roomId: null, avatar: null, playerId: null }
 
 const sessionSlice = createSlice({
     name: 'session',
@@ -22,24 +23,42 @@ const sessionSlice = createSlice({
         setHost(state, action: PayloadAction<boolean>) {
             state.host = action.payload
         },
-        removeHost(state) {
+        clearHost(state) {
             state.host = null
         },
         setRoomId(state, action: PayloadAction<string>) {
             state.roomId = action.payload
         },
-        removeRoomId(state) {
+        clearRoomId(state) {
             state.roomId = null
         },
         setAvatar(state, action: PayloadAction<string>) {
             state.avatar = action.payload
         },
-        removeAvatar(state) {
+        clearAvatar(state) {
             state.avatar = null
+        },
+        setPlayerId(state, action: PayloadAction<string>) {
+            state.playerId = action.payload
+        },
+        clearPlayerId(state) {
+            state.playerId = null
+        },
+        setSession(state, action: PayloadAction<ITypeSession>) {
+            state.avatar = action.payload.avatar
+            state.host = action.payload.host
+            state.roomId = action.payload.roomId
+            state.playerId = action.payload.playerId
+        },
+        clearSession(state) {
+            state.avatar = null
+            state.host = null
+            state.roomId = null
+            state.playerId = null
         },
     }
 })
 
-export const { addToken, removeToken, removeHost, removeRoomId, setHost, setRoomId, removeAvatar, setAvatar } = sessionSlice.actions;
+export const { addToken, removeToken, clearHost, clearRoomId, setHost, setRoomId, clearAvatar, setAvatar, clearSession, setSession, clearPlayerId, setPlayerId } = sessionSlice.actions;
 
 export default sessionSlice.reducer
