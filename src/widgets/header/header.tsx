@@ -5,14 +5,21 @@ import { ContainerFlex } from '@s-app';
 import { removeToken } from '@/entities/session/sessionSlice';
 import { authLogout, useAppDispatch, useAppSelector } from '@shared';
 import { Message } from '@features/Message';
+import { selectorSession } from '@entities/session';
+import { database } from '@main';
+import { remove, ref } from 'firebase/database';
 
 export default function Header() {
   const name = useAppSelector((state) => state.user.name);
+  const session = useAppSelector(selectorSession);
   const dispatch = useAppDispatch();
   const handlerLogout = () => {
     authLogout().finally(() => {
       dispatch(removeToken());
     });
+    if (session.roomId && session.playerId) {
+      remove(ref(database, 'game/' + session.roomId + '/players/' + session.playerId));
+    }
   };
 
   return (
