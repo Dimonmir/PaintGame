@@ -6,19 +6,40 @@ import { removeToken } from '@/entities/session/sessionSlice';
 import { authLogout, useAppDispatch, useAppSelector } from '@shared';
 import { Message } from '@features/Message';
 import { selectorSession } from '@entities/session';
-import { database } from '@main';
+import { app, database } from '@main';
 import { remove, ref } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
 
 export default function Header() {
+  const auth = getAuth(app);
   const name = useAppSelector((state) => state.user.name);
   const session = useAppSelector(selectorSession);
   const dispatch = useAppDispatch();
   const handlerLogout = () => {
-    authLogout().finally(() => {
-      dispatch(removeToken());
-    });
     if (session.roomId && session.playerId) {
-      remove(ref(database, 'game/' + session.roomId + '/players/' + session.playerId));
+      if (session.host) {
+        remove(ref(database, 'game/' + session.roomId + '/players/' + session.playerId)).then(
+          () => {
+            remove(ref(database, 'game/' + session.roomId)).then(() => {
+              authLogout().finally(() => {
+                dispatch(removeToken());
+              });
+            });
+          }
+        );
+      } else {
+        remove(ref(database, 'game/' + session.roomId + '/players/' + session.playerId)).then(
+          () => {
+            authLogout().finally(() => {
+              dispatch(removeToken());
+            });
+          }
+        );
+      }
+    } else {
+      authLogout().finally(() => {
+        dispatch(removeToken());
+      });
     }
   };
 
