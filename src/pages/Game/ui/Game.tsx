@@ -8,20 +8,25 @@ import { Button } from 'antd';
 import { setAvatar, setHost, setRoomId } from '@entities/session/sessionSlice';
 import { get, child, ref, getDatabase, DataSnapshot, push } from 'firebase/database';
 import { database } from '@main';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
+import { addMessage } from '@features/Message';
 
 const Game = () => {
   const profile = useAppSelector((store) => store.user);
   const host = useAppSelector((store) => store.session.host);
   const roomId = useAppSelector((store) => store.session.roomId);
   const avatar = useAppSelector((store) => store.session.avatar);
-
   const auth = getAuth();
 
   const [isReady, setIsReady] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+
+  dispatch(addMessage([{ level: 'low', type: 'success', message: 'Подписание прошло успешно' }]));
+
+  const { game } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let flag: boolean = true;
@@ -51,9 +56,12 @@ const Game = () => {
                       host: false,
                       avatar: avatarRand,
                     });
+                    flag = false;
+                    return;
                   }
                   flag = false;
                 }
+                navigate('/game/' + key);
               }
               return;
             }
@@ -61,12 +69,11 @@ const Game = () => {
         }
       }
       if (flag) {
-        const roomRand = randString();
         const avatarRand = '/avatar' + Math.floor(Math.random() * 9) + '.png';
         dispatch(setHost(true));
-        dispatch(setRoomId(roomRand));
+        dispatch(setRoomId(game as string));
         dispatch(setAvatar(avatarRand));
-        push(ref(database, 'game/' + roomRand + '/players'), {
+        push(ref(database, 'game/' + game + '/players'), {
           user: profile.name,
           uid: profile.uid,
           host: true,
@@ -81,9 +88,7 @@ const Game = () => {
       <GameForm>
         <div className="gameConteiner">
           <div className="title">
-            {/* <Button className="back" type="text" danger> */}
             <Link to={'/menu'}>Выйти</Link>
-            {/* </Button> */}
             <div>{host ? 'Вы хост' : 'Вы участник'}</div>
             <div>0:00</div>
           </div>

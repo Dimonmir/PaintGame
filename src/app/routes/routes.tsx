@@ -32,7 +32,7 @@ const privateRoutes = createBrowserRouter([
     element: <Menu />,
   },
   {
-    path: '/game',
+    path: '/game/:game',
     element: <Game />,
   },
   {

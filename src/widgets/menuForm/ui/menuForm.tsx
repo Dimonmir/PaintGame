@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { BoxMenu } from './s-menuForm';
 import { Button, Typography } from 'antd';
+import { randString } from '@shared/index';
 
 const MenuForm = () => {
   const navigate = useNavigate();
 
   function navigateGame() {
-    navigate('/game');
+    navigate('/game/' + randString());
   }
   return (
     <BoxMenu>

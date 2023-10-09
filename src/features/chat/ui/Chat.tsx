@@ -9,6 +9,7 @@ import {
   isIMessage,
   isIPlayer,
   randString,
+  useAppDispatch,
   useAppSelector,
 } from '@shared/index';
 import { useEffect, useRef, useState } from 'react';
@@ -25,7 +26,8 @@ import {
   set,
 } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { addMessage } from '@features/Message';
 
 export const Chat = () => {
   const auth = getAuth(app);
@@ -36,6 +38,7 @@ export const Chat = () => {
 
   const playersIdBaseRef = useRef('');
 
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [playersRoom, setPlayersRoom] = useState<IPlayer[]>([]);
@@ -68,7 +71,15 @@ export const Chat = () => {
         }
         tempPlayers.length !== playersRoom.length && setPlayersRoom(tempPlayers);
       } else {
-        navigate('/menu');
+        dispatch(
+          addMessage([
+            {
+              level: 'low',
+              type: 'error',
+              message: 'Хост комнаты вышел из комнаты',
+            },
+          ])
+        );
       }
     });
 

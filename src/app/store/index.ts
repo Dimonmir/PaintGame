@@ -14,9 +14,11 @@ import storage from "redux-persist/es/storage";
 
 import sessionSlice from "@entities/session";
 import userSlice from "@entities/users";
+import messageSlice from "@features/Message/model/message.slice";
 
 export const rootReducer = combineReducers({
     session: sessionSlice,
+    message: messageSlice,
     user: userSlice
 })
 
