@@ -55,7 +55,6 @@ export const Chat = () => {
     const startMessageRef = ref(getDatabase(), 'game/' + roomId + '/chat');
 
     const listenerPlayer: Unsubscribe = onValue(startPlayersRef, (snapshot: DataSnapshot) => {
-      console.log(snapshot.val());
       const valueSnap = snapshot.val();
       const tempPlayers: IPlayer[] = [];
       if (valueSnap != null) {

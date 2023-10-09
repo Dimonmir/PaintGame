@@ -25,59 +25,55 @@ const Game = () => {
 
   useEffect(() => {
     let flag: boolean = true;
-    get(child(ref(getDatabase()), `game`))
-      .then((snapshot: DataSnapshot) => {
-        setIsReady(true);
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          for (const [key, value] of Object.entries(data)) {
-            if (value && typeof value === 'object' && 'players' in value) {
-              if (value.players && typeof value.players === 'object') {
-                const arrayOfPlayers = Object.values(value.players);
-                for (const [keyPlayers, valuePlayers] of Object.entries(value.players)) {
-                  const player: IPlayer = valuePlayers;
-                  if (Object.keys(value.players).length < 4) {
-                    if (!hasTargetValue(arrayOfPlayers, profile.uid)) {
-                      dispatch(setRoomId(key));
-                      dispatch(setHost(player.host));
-                      dispatch(setAvatar(player.avatar));
-                    } else {
-                      const avatarRand = '/avatar' + Math.floor(Math.random() * 9) + '.png';
-                      dispatch(setRoomId(key));
-                      dispatch(setHost(false));
-                      dispatch(setAvatar(avatarRand));
-                      push(ref(database, 'game/' + key + '/players'), {
-                        user: profile.name,
-                        uid: profile.uid,
-                        host: false,
-                        avatar: avatarRand,
-                      });
-                    }
-                    flag = false;
+    get(child(ref(getDatabase()), `game`)).then((snapshot: DataSnapshot) => {
+      setIsReady(true);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        for (const [key, value] of Object.entries(data)) {
+          if (value && typeof value === 'object' && 'players' in value) {
+            if (value.players && typeof value.players === 'object') {
+              const arrayOfPlayers = Object.values(value.players);
+              for (const [keyPlayers, valuePlayers] of Object.entries(value.players)) {
+                const player: IPlayer = valuePlayers;
+                if (Object.keys(value.players).length < 4) {
+                  if (!hasTargetValue(arrayOfPlayers, profile.uid)) {
+                    dispatch(setRoomId(key));
+                    dispatch(setHost(player.host));
+                    dispatch(setAvatar(player.avatar));
+                  } else {
+                    const avatarRand = '/avatar' + Math.floor(Math.random() * 9) + '.png';
+                    dispatch(setRoomId(key));
+                    dispatch(setHost(false));
+                    dispatch(setAvatar(avatarRand));
+                    push(ref(database, 'game/' + key + '/players'), {
+                      user: profile.name,
+                      uid: profile.uid,
+                      host: false,
+                      avatar: avatarRand,
+                    });
                   }
+                  flag = false;
                 }
-                return;
               }
+              return;
             }
           }
         }
-        if (flag) {
-          const roomRand = randString();
-          const avatarRand = '/avatar' + Math.floor(Math.random() * 9) + '.png';
-          dispatch(setHost(true));
-          dispatch(setRoomId(roomRand));
-          dispatch(setAvatar(avatarRand));
-          push(ref(database, 'game/' + roomRand + '/players'), {
-            user: profile.name,
-            uid: profile.uid,
-            host: true,
-            avatar: avatarRand,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+      }
+      if (flag) {
+        const roomRand = randString();
+        const avatarRand = '/avatar' + Math.floor(Math.random() * 9) + '.png';
+        dispatch(setHost(true));
+        dispatch(setRoomId(roomRand));
+        dispatch(setAvatar(avatarRand));
+        push(ref(database, 'game/' + roomRand + '/players'), {
+          user: profile.name,
+          uid: profile.uid,
+          host: true,
+          avatar: avatarRand,
+        });
+      }
+    });
   }, []);
   return (
     <>
