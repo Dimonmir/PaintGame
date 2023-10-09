@@ -2,13 +2,14 @@ import Header from '@widgets/header/header';
 import { GameForm } from './Game.styles';
 import Canvas from '@features/canvas';
 import Chat from '@features/chat';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IPlayer, hasTargetValue, randString, useAppDispatch, useAppSelector } from '@shared/index';
 import { Button } from 'antd';
 import { setAvatar, setHost, setRoomId } from '@entities/session/sessionSlice';
 import { get, child, ref, getDatabase, DataSnapshot, push } from 'firebase/database';
 import { database } from '@main';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
 
 const Game = () => {
   const profile = useAppSelector((store) => store.user);
@@ -16,18 +17,17 @@ const Game = () => {
   const roomId = useAppSelector((store) => store.session.roomId);
   const avatar = useAppSelector((store) => store.session.avatar);
 
+  const auth = getAuth();
+
+  const [isReady, setIsReady] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
-
-  function navigateMenu() {
-    navigate('/game');
-  }
 
   useEffect(() => {
     let flag: boolean = true;
     get(child(ref(getDatabase()), `game`))
       .then((snapshot: DataSnapshot) => {
+        setIsReady(true);
         if (snapshot.exists()) {
           const data = snapshot.val();
           for (const [key, value] of Object.entries(data)) {
@@ -43,15 +43,14 @@ const Game = () => {
                       dispatch(setAvatar(player.avatar));
                     } else {
                       const avatarRand = '/avatar' + Math.floor(Math.random() * 9) + '.png';
+                      dispatch(setRoomId(key));
+                      dispatch(setHost(false));
+                      dispatch(setAvatar(avatarRand));
                       push(ref(database, 'game/' + key + '/players'), {
                         user: profile.name,
                         uid: profile.uid,
                         host: false,
                         avatar: avatarRand,
-                      }).then(() => {
-                        dispatch(setRoomId(key));
-                        dispatch(setHost(false));
-                        dispatch(setAvatar(avatarRand));
                       });
                     }
                     flag = false;
@@ -86,15 +85,15 @@ const Game = () => {
       <GameForm>
         <div className="gameConteiner">
           <div className="title">
-            <Button className="back" type="text" danger onClick={navigateMenu}>
-              Выйти
-            </Button>
+            {/* <Button className="back" type="text" danger> */}
+            <Link to={'/menu'}>Выйти</Link>
+            {/* </Button> */}
             <div>{host ? 'Вы хост' : 'Вы участник'}</div>
             <div>0:00</div>
           </div>
           <Canvas />
         </div>
-        <Chat />
+        {isReady && <Chat />}
       </GameForm>
     </>
   );

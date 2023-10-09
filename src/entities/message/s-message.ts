@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 
 interface ISMessage {
-    myMessage: boolean
+    $myMessage: boolean
 }
 
 export const SMessage = styled.div<ISMessage>`
@@ -16,7 +16,7 @@ export const SMessage = styled.div<ISMessage>`
     border: 1px solid ${({ theme }) => theme.colors.darkGray};
     
     ${(props)=> 
-        props.myMessage &&
+        props.$myMessage &&
         css`
         align-self: center;
         `

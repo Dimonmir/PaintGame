@@ -13,14 +13,30 @@ import {
 } from '@shared/index';
 import { useEffect, useRef, useState } from 'react';
 import { app, database } from '@main';
-import { DataSnapshot, getDatabase, onValue, push, ref, set } from 'firebase/database';
+import {
+  DataSnapshot,
+  Unsubscribe,
+  getDatabase,
+  off,
+  onValue,
+  push,
+  ref,
+  remove,
+  set,
+} from 'firebase/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 export const Chat = () => {
   const auth = getAuth(app);
   const profile = useAppSelector((store) => store.user);
   const roomId = useAppSelector((store) => store.session.roomId);
   const avatar = useAppSelector((store) => store.session.avatar);
+  const host = useAppSelector((store) => store.session.host);
+
+  const playersIdBaseRef = useRef('');
+
+  const navigate = useNavigate();
 
   const [playersRoom, setPlayersRoom] = useState<IPlayer[]>([]);
   const [messageChat, setMessageChat] = useState<IMessage[]>([]);
@@ -35,33 +51,60 @@ export const Chat = () => {
   };
 
   useEffect(() => {
-    console.log(roomId);
     const startPlayersRef = ref(getDatabase(), 'game/' + roomId + '/players');
     const startMessageRef = ref(getDatabase(), 'game/' + roomId + '/chat');
 
-    onValue(startPlayersRef, (snapshot: DataSnapshot) => {
+    const listenerPlayer: Unsubscribe = onValue(startPlayersRef, (snapshot: DataSnapshot) => {
+      console.log(snapshot.val());
       const valueSnap = snapshot.val();
       const tempPlayers: IPlayer[] = [];
-      for (const [keyPlayers, valuePlayers] of Object.entries(valueSnap)) {
-        if (isIPlayer(valuePlayers)) {
-          !hasTargetValue(playersRoom, valuePlayers.uid) && tempPlayers.push(valuePlayers);
+      if (valueSnap != null) {
+        for (const [keyPlayers, valuePlayers] of Object.entries(valueSnap)) {
+          if (isIPlayer(valuePlayers)) {
+            tempPlayers.push(valuePlayers);
+            if (!hasTargetValue(tempPlayers, profile.uid)) {
+              playersIdBaseRef.current = keyPlayers;
+            }
+          }
         }
+        tempPlayers.length !== playersRoom.length && setPlayersRoom(tempPlayers);
+      } else {
+        navigate('/menu');
       }
-      tempPlayers.length !== playersRoom.length && setPlayersRoom(tempPlayers);
     });
 
-    onValue(startMessageRef, (snapshot: DataSnapshot) => {
+    const listenerMessage: Unsubscribe = onValue(startMessageRef, (snapshot: DataSnapshot) => {
       const valueSnap = snapshot.val();
       const tempMessage: IMessage[] = [];
-      for (const [keyMessage, valueMessage] of Object.entries(valueSnap)) {
-        if (isIMessage(valueMessage)) {
-          console.log(messageChat, valueMessage.messageId);
-          console.log(hasTargetValue(messageChat, valueMessage.messageId));
-          !hasTargetValue(messageChat, valueMessage.messageId) && tempMessage.push(valueMessage);
+      if (valueSnap) {
+        for (const [keyMessage, valueMessage] of Object.entries(valueSnap)) {
+          if (isIMessage(valueMessage)) {
+            !hasTargetValue(messageChat, valueMessage.messageId) && tempMessage.push(valueMessage);
+          }
         }
+        tempMessage.length !== messageChat.length && setMessageChat(tempMessage);
       }
-      tempMessage.length !== messageChat.length && setMessageChat(tempMessage);
     });
+
+    return () => {
+      if (host) {
+        remove(ref(database, 'game/' + roomId + '/players/' + playersIdBaseRef.current)).then(
+          () => {
+            remove(ref(database, 'game/' + roomId)).then(() => {
+              listenerPlayer();
+              listenerMessage();
+            });
+          }
+        );
+      } else {
+        remove(ref(database, 'game/' + roomId + '/players/' + playersIdBaseRef.current)).then(
+          () => {
+            listenerPlayer();
+            listenerMessage();
+          }
+        );
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -76,20 +119,14 @@ export const Chat = () => {
     if (!message) {
       return;
     }
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        user.getIdToken().then((idToken) => {
-          push(ref(database, 'game/' + roomId + '/chat'), {
-            message: message,
-            author: profile.name,
-            uid: profile.uid,
-            avatar: avatar,
-            messageId: randString(),
-          }).then(() => {
-            setMessage('');
-          });
-        });
-      }
+    push(ref(database, 'game/' + roomId + '/chat'), {
+      message: message,
+      author: profile.name,
+      uid: profile.uid,
+      avatar: avatar,
+      messageId: randString(),
+    }).then(() => {
+      setMessage('');
     });
   };
 
@@ -98,10 +135,10 @@ export const Chat = () => {
       <div className="headerContainer">
         {playersRoom.length &&
           playersRoom.map((player) => (
-            <>
+            <div key={player.uid}>
               <div>{player.user}</div>
               <Avatar size={40} icon={<img src={player.avatar} alt="avatar" />} />
-            </>
+            </div>
           ))}
       </div>
       <div className="chatContainer">

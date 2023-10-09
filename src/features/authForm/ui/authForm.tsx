@@ -40,7 +40,6 @@ const AuthForm = () => {
         })
         .then(({ token, uid }) => {
           getDoc(doc(db, 'users', uid)).then((userData) => {
-            console.log(userData);
             if (userData.exists()) {
               let userAdd: IUser = {
                 uid: userData.data().uid,

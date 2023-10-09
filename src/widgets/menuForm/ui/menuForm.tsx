@@ -5,7 +5,7 @@ import { Button, Typography } from 'antd';
 const MenuForm = () => {
   const navigate = useNavigate();
 
-  function navigateMenu() {
+  function navigateGame() {
     navigate('/game');
   }
   return (
@@ -14,7 +14,7 @@ const MenuForm = () => {
         <Typography.Title level={2}> Добро пожаловать ! </Typography.Title>
       </div>
       <div className="menuButton">
-        <Button type="primary" onClick={navigateMenu}>
+        <Button type="primary" onClick={navigateGame}>
           Быстрая игра
         </Button>
         <Button type="primary"> Создать игру </Button>

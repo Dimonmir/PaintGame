@@ -13,7 +13,7 @@ const RegForm = () => {
   const navigate = useNavigate();
 
   function navigateAuth() {
-    navigate('/');
+    navigate('/auth');
   }
 
   const dispatch = useAppDispatch();

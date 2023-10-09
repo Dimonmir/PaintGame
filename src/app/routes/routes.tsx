@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
 import AuthForm from '@widgets/authForm';
 import RegForm from '@widgets/regForm';
@@ -9,12 +9,16 @@ import NotFound from '@pages/NotFound';
 
 const publicRoutes = createBrowserRouter([
   {
-    path: '/',
+    path: '/auth',
     element: <AuthForm />,
   },
   {
     path: '/reg',
     element: <RegForm />,
+  },
+  {
+    path: '/',
+    element: <Navigate to="/auth" />,
   },
   {
     path: '*',
@@ -24,7 +28,7 @@ const publicRoutes = createBrowserRouter([
 
 const privateRoutes = createBrowserRouter([
   {
-    path: '/',
+    path: '/menu',
     element: <Menu />,
   },
   {
@@ -34,6 +38,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: '*',
     element: <NotFound />,
+  },
+  {
+    path: '/',
+    element: <Navigate to="/menu" />,
   },
 ]);
 
