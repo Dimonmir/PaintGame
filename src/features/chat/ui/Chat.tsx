@@ -36,8 +36,6 @@ export const Chat = () => {
   const profile = useAppSelector((store) => store.user);
   const session = useAppSelector(selectorSession);
 
-  const playersIdBaseRef = useRef('');
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

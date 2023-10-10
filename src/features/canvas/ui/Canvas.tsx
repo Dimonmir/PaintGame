@@ -1,16 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { SCanvas } from './s-canvas';
 
-export const Canvas = () => {
+interface ICanvas {
+  disable: boolean;
+}
+
+export const Canvas: FC<ICanvas> = ({ disable }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  const [boundingRect, setBoundingRect] = useState<{width: number, height:number}>({width: 0, height: 0});
-  
+  const [boundingRect, setBoundingRect] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    setBoundingRect({width: canvas.clientHeight, height: canvas.clientHeight});
+    setBoundingRect({ width: canvas.clientHeight, height: canvas.clientHeight });
 
     const context = canvas.getContext('2d');
     if (!context) return;
@@ -25,7 +32,7 @@ export const Canvas = () => {
   const startDrawing = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     const context = contextRef.current;
-    if (canvas && context) {
+    if (canvas && context && disable) {
       const x = event.clientX - canvas.getBoundingClientRect().left;
       const y = event.clientY - canvas.getBoundingClientRect().top;
 
@@ -40,7 +47,7 @@ export const Canvas = () => {
 
     const canvas = canvasRef.current;
     const context = contextRef.current;
-    if (canvas && context) {
+    if (canvas && context && disable) {
       const x = event.clientX - canvas.getBoundingClientRect().left;
       const y = event.clientY - canvas.getBoundingClientRect().top;
 

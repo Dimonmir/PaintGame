@@ -16,12 +16,21 @@ const MenuForm = () => {
         <Typography.Title level={2}> Добро пожаловать ! </Typography.Title>
       </div>
       <div className="menuButton">
-        <Button type="primary" onClick={navigateGame}>
+        <Button type="primary" className="animate-jump" onClick={navigateGame}>
           Быстрая игра
         </Button>
-        <Button type="primary"> Создать игру </Button>
-        <Button type="primary"> Присоедниться к игре </Button>
-        <Button type="primary"> Настройки </Button>
+        <Button type="primary" className="animate-jump">
+          {' '}
+          Создать игру{' '}
+        </Button>
+        <Button type="primary" className="animate-jump">
+          {' '}
+          Присоедниться к игре{' '}
+        </Button>
+        <Button type="primary" className="animate-jump">
+          {' '}
+          Настройки{' '}
+        </Button>
       </div>
     </BoxMenu>
   );

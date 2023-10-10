@@ -12,13 +12,16 @@ export const SMessage = styled.div<ISMessage>`
     grid-template-columns: max-content auto;
     height: max-content;
     background-color: #FFFFFF;
+    justify-content: start;
     border-radius: 10px;
     border: 1px solid ${({ theme }) => theme.colors.darkGray};
     
     ${(props)=> 
         props.$myMessage &&
         css`
-        align-self: center;
+         grid-template-columns: auto max-content;
+         justify-content: end;
+         align-self: end;
         `
     }
 
@@ -35,5 +38,6 @@ export const SMessage = styled.div<ISMessage>`
 
     & .messageText{
         overflow-wrap: anywhere;
+        text-align: left;
     }
 `

@@ -47,7 +47,7 @@ const privateRoutes = createBrowserRouter([
 
 const WithRouter = () => {
   const accessToken = useAppSelector((store) => store.session.token);
-  return <RouterProvider router={accessToken.length ? privateRoutes : publicRoutes} />;
+  return <RouterProvider router={accessToken?.length ? privateRoutes : publicRoutes} />;
 };
 
 export default WithRouter;

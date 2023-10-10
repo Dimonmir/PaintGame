@@ -9,12 +9,15 @@ import { get, child, ref, getDatabase, DataSnapshot, push } from 'firebase/datab
 import { database } from '@main';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
+import { Button } from 'antd';
+import { ClockCircleOutlined } from '@ant-design/icons';
 
 const Game = () => {
   const auth = getAuth();
   const profile = useAppSelector((store) => store.user);
   const host = useAppSelector((store) => store.session.host);
 
+  const [startGame, setStartGame] = useState<boolean>(false);
   const [isReady, setIsReady] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
@@ -100,11 +103,28 @@ const Game = () => {
       <GameForm>
         <div className="gameConteiner">
           <div className="title">
-            <Link to={'/menu'}>Выйти</Link>
+            <Link className="exit" to={'/menu'}>
+              Вернутся
+            </Link>
             <div>{host ? 'Вы хост' : 'Вы участник'}</div>
-            <div>0:00</div>
+            <div>
+              <ClockCircleOutlined />
+              <span></span>
+            </div>
           </div>
-          <Canvas />
+          {!startGame && (
+            <div className="wrapButtonStart">
+              {host ? (
+                <button className="buttonStart">Начать игру</button>
+              ) : (
+                <div className="waitContainer">
+                  <div className="waitImg"></div>
+                  <div>Ждем пока хост запустит игру</div>
+                </div>
+              )}
+            </div>
+          )}
+          <Canvas disable={startGame} />
         </div>
         {isReady && <Chat />}
       </GameForm>
